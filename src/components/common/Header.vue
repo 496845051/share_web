@@ -33,13 +33,19 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>
-                            <router-link to="account">账户设置</router-link>
+                            <router-link to="account">
+                                <span>账户设置</span>
+                            </router-link>
                         </el-dropdown-item>
                         <el-dropdown-item>
-                            <router-link to="psdChange">修改密码</router-link>
+                            <router-link to="psdChange">
+                                <span>修改密码</span>
+                            </router-link>
                         </el-dropdown-item>
                         <el-dropdown-item>
-                            <router-link to="safety">安全设置</router-link>
+                            <router-link to="safety">
+                                <span>安全设置</span>
+                            </router-link>
                         </el-dropdown-item>
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -49,69 +55,69 @@
     </div>
 </template>
 <script>
-import bus from '../common/bus';
+import bus from "../common/bus";
 export default {
-    data() {
-        return {
-            collapse: false,
-            fullscreen: false,
-            name: 'linxin',
-            message: 2
-        }
-    },
-    computed: {
-        username() {
-            let username = localStorage.getItem('ms_username');
-            return username ? username : this.name;
-        }
-    },
-    methods: {
-        // 用户名下拉菜单选择事件
-        handleCommand(command) {
-            if (command == 'loginout') {
-                localStorage.removeItem('ms_username')
-                this.$router.push('/login');
-            }
-        },
-        // 侧边栏折叠
-        collapseChage() {
-            this.collapse = !this.collapse;
-            bus.$emit('collapse', this.collapse);
-        },
-        // 全屏事件
-        handleFullScreen() {
-            let element = document.documentElement;
-            if (this.fullscreen) {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitCancelFullScreen) {
-                    document.webkitCancelFullScreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            } else {
-                if (element.requestFullscreen) {
-                    element.requestFullscreen();
-                } else if (element.webkitRequestFullScreen) {
-                    element.webkitRequestFullScreen();
-                } else if (element.mozRequestFullScreen) {
-                    element.mozRequestFullScreen();
-                } else if (element.msRequestFullscreen) {
-                    // IE11
-                    element.msRequestFullscreen();
-                }
-            }
-            this.fullscreen = !this.fullscreen;
-        }
-    },
-    mounted() {
-        if (document.body.clientWidth < 1500) {
-            this.collapseChage();
-        }
+  data() {
+    return {
+      collapse: false,
+      fullscreen: false,
+      name: "linxin",
+      message: 2
+    };
+  },
+  computed: {
+    username() {
+      let username = localStorage.getItem("ms_username");
+      return username ? username : this.name;
     }
-}
+  },
+  methods: {
+    // 用户名下拉菜单选择事件
+    handleCommand(command) {
+      if (command == "loginout") {
+        localStorage.removeItem("ms_username");
+        this.$router.push("/login");
+      }
+    },
+    // 侧边栏折叠
+    collapseChage() {
+      this.collapse = !this.collapse;
+      bus.$emit("collapse", this.collapse);
+    },
+    // 全屏事件
+    handleFullScreen() {
+      let element = document.documentElement;
+      if (this.fullscreen) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } else {
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) {
+          // IE11
+          element.msRequestFullscreen();
+        }
+      }
+      this.fullscreen = !this.fullscreen;
+    }
+  },
+  mounted() {
+    if (document.body.clientWidth < 1500) {
+      this.collapseChage();
+    }
+  }
+};
 </script>
 <style scoped>
 .header {
@@ -189,5 +195,11 @@ export default {
 }
 .el-dropdown-menu__item {
   text-align: center;
+}
+.el-dropdown-menu__item span {
+  color: #606266;
+}
+.el-dropdown-menu__item span:hover {
+  color: #66b1ff;
 }
 </style>
