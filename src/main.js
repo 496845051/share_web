@@ -10,6 +10,19 @@ import "babel-polyfill";
 import './assets/icons/iconfont.css';
 import Vuex from 'vuex';
 import store from './store/index'
+
+import {
+    GET,
+    POST,
+    DELETE,
+    PUT
+} from './utils/http'
+Vue.prototype.$POST = POST
+Vue.prototype.$GET = GET
+Vue.prototype.$DELETE = DELETE
+Vue.prototype.$PUT = PUT
+
+
 Vue.use(ElementUI, {
     size: 'small'
 });
