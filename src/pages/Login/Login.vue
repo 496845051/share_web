@@ -16,7 +16,7 @@
                 <div class="login-btn">
                     <el-row :gutter="20">
                         <el-col :span="12">
-                            <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                            <el-button type="primary" @click="submitForm('ruleForm')" :loading="GET_LOADING">登录</el-button>
                         </el-col>
                         <el-col :span="12">
                             <el-button type="default">注册</el-button>
@@ -30,40 +30,48 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
 export default {
-    data: function () {
-        return {
-            ruleForm: {
-                username: 'admin',
-                password: '123123'
-            },
-            rules: {
-                username: [
-                    { required: true, message: '请输入用户名', trigger: 'blur' }
-                ],
-                password: [
-                    { required: true, message: '请输入密码', trigger: 'blur' }
-                ]
-            }
+  data: function() {
+    return {
+      ruleForm: {
+        username: "admin",
+        password: "admin"
+      },
+      rules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" }
+        ],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+      }
+    };
+  },
+  methods: {
+    ...mapMutations(["TOGGLE_LOADING", "SET_TOKEN"]),
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.TOGGLE_LOADING();
+          this.$POST("/auth", {
+            username: this.ruleForm.username,
+            password: this.ruleForm.password
+          }).then(res => {
+            this.TOGGLE_LOADING();
+            this.SET_TOKEN(res.token);
+            localStorage.setItem("ms_username", this.ruleForm.username);
+            this.$router.push("/");
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
         }
-    },
-    methods: {
-        submitForm(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    this.$POST('auth').then(res => {
-
-                    })
-                    localStorage.setItem('ms_username', this.ruleForm.username);
-                    this.$router.push('/');
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        }
+      });
     }
-}
+  },
+  computed: {
+    ...mapGetters(["GET_LOADING"])
+  }
+};
 </script>
 
 <style scoped>

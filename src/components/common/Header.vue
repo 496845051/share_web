@@ -56,6 +56,7 @@
 </template>
 <script>
 import bus from "../common/bus";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -72,10 +73,12 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["CLEAR_TOKEN"]),
     // 用户名下拉菜单选择事件
     handleCommand(command) {
       if (command == "loginout") {
         localStorage.removeItem("ms_username");
+        this.CLEAR_TOKEN();
         this.$router.push("/login");
       }
     },
