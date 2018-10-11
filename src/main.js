@@ -8,42 +8,49 @@ import "element-ui/lib/theme-chalk/index.css"; // 默认主题
 import "../static/css/icon.css";
 import "babel-polyfill";
 import "./assets/icons/iconfont.css";
+import "./assets/css/animate.min.css";
 import Vuex from "vuex";
 import store from "./store/index";
 
-import { GET, POST, DELETE, PUT } from "./utils/http";
+import {
+    GET,
+    POST,
+    DELETE,
+    PUT
+} from "./utils/http";
 Vue.prototype.$POST = POST;
 Vue.prototype.$GET = GET;
 Vue.prototype.$DELETE = DELETE;
 Vue.prototype.$PUT = PUT;
 Vue.prototype.$axios = axios;
 
-Vue.use(ElementUI, {
-    size: "small"
-});
+Vue.use(ElementUI);
 
 Vue.use(Vuex);
+
+//在页面加载时读取sessionStorage里的状态信息
+if (sessionStorage.getItem("store")) {
+    store.replaceState(
+        Object.assign({},
+            store.state,
+            JSON.parse(sessionStorage.getItem("store"))
+        )
+    );
+}
+
+//在页面刷新时将vuex里的信息保存到sessionStorage里
+window.addEventListener("beforeunload", () => {
+    sessionStorage.setItem("store", JSON.stringify(this.$store.state));
+});
+
 //使用钩子函数对路由进行权限跳转
+// 以是否有vuex中是否有token判断其是否登录
 router.beforeEach((to, from, next) => {
-    const role = localStorage.getItem("ms_username");
-    if (!role && to.path !== "/login") {
+    const token = store.getters.GET_TOKEN;
+    if (!token && to.path !== "/login") {
         next("/login");
-    } else if (to.meta.permission) {
-        // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
-        role === "admin" ? next() : next("/403");
     } else {
-        // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
-        if (navigator.userAgent.indexOf("MSIE") > -1 && to.path === "/editor") {
-            Vue.prototype.$alert(
-                "vue-quill-editor组件不兼容IE10及以下浏览器，请使用更高版本的浏览器查看",
-                "浏览器不兼容通知",
-                {
-                    confirmButtonText: "确定"
-                }
-            );
-        } else {
-            next();
-        }
+        next();
     }
 });
 

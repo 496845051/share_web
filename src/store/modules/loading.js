@@ -17,21 +17,16 @@ export default {
     },
     mutations: {
         OPEN_LOADING: (state, text = DEFAULT_LOADING_TEXT) => {
-            state.text = text;
+            state.loadingText = text;
             state.loading = true;
         },
         CLOSE_LOADING: state => {
-            state.text = "";
+            state.loadingText = "";
             state.loading = false;
         },
         TOGGLE_LOADING: (state, loading, text = DEFAULT_LOADING_TEXT) => {
-            if (state.loading) {
-                state.text = "";
-                state.loading = loading;
-            } else {
-                state.text = text;
-                state.loading = loading;
-            }
+            state.loading = loading
+            state.loadingText = text
         }
     }
 };

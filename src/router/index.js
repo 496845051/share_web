@@ -31,9 +31,16 @@ export default new Router({
                 },
                 {
                     path: 'goodsManage',
-                    component: resolve => require(['../pages/Seller/GoodsManage/GoodsManage.vue'], resolve),
+                    component: resolve => require(['../pages/Seller/Goods/GoodsManage/GoodsManage.vue'], resolve),
                     meta: {
                         title: '商品管理'
+                    }
+                },
+                {
+                    path: 'addGoods',
+                    component: resolve => require(['../pages/Seller/Goods/AddGoods/AddGoods.vue'], resolve),
+                    meta: {
+                        title: '添加商品'
                     }
                 },
                 {
@@ -47,7 +54,7 @@ export default new Router({
                     path: 'employeeManage',
                     component: resolve => require(['../pages/Seller/EmployeeManage/EmployeeManage.vue'], resolve),
                     meta: {
-                        title: '集品管理'
+                        title: '员工管理'
                     }
                 },
                 {
